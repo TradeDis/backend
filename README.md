@@ -34,6 +34,18 @@ yarn install
 
 ## Run It
 
+#### Setup Envioronment
+
+```shell
+cp .env.example
+```
+
+```shell
+vi .env
+```
+
+and change the `MONGODB_URI_DEV` to `mongodb+srv://tradedis:tradedis2020@cluster0.topez.gcp.mongodb.net/default?retryWrites=true&w=majority`
+
 #### Run in _development_ mode:
 
 Runs the application is development mode. Should not be used in production
