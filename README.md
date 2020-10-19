@@ -7,6 +7,9 @@ Get started developing...
 You need to create a `.env` file and configure your database at first, then set up the database and start developing / testing.
 
 ```shell
+# clone repo
+git clone https://github.com/TradeDis/backend.git && cd backend
+
 # install deps
 yarn install
 
