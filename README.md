@@ -35,7 +35,7 @@ yarn install
 #### Setup Envioronment
 
 ```shell
-cp .env.example
+cp .env.example .env
 ```
 
 ```shell
