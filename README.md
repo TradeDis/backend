@@ -45,7 +45,7 @@ cp .env.example .env
 vi .env
 ```
 
-and change the `MONGODB_URI_DEV` to `mongodb+srv://tradedis:tradedis2020@cluster0.topez.gcp.mongodb.net/default?retryWrites=true&w=majority`
+and change the `MONGODB_URI_DEV` to `MONGODB_URI_DEV=mongodb+srv://tradedis:tradedis2020@cluster0.ieu4n.mongodb.net/development?retryWrites=true&w=majority`
 
 #### Run in _development_ mode:
 
@@ -108,6 +108,14 @@ Make sure the database is running
 yarn dev:debug
 ```
 
+#### Debug the Database:
+
+```
+https://account.mongodb.com/account/login
+email: hello@alan-wu.com
+password: tradedis2020
+```
+
 #### Debug Tests
 
 ```
@@ -133,6 +141,16 @@ Check type error
 ```
 yarn typecheck
 ```
+
+---
+
+## Notes
+
+### Moongose
+
+- Sync real database with the model. We need to import and use the Model first in order for moongose to sync the changes.
+
+- Only import the model once in the project otherwise the same changes (ex. ID increment would be created multiple times)
 
 ---
 
