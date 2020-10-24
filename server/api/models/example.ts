@@ -10,7 +10,7 @@ export interface IExampleModel extends mongoose.Document {
 
 const schema = new mongoose.Schema(
   {
-    id: { type: Number, unique: true },
+    example_id: { type: Number, unique: true },
     name: String,
     type: String,
   },
@@ -19,6 +19,6 @@ const schema = new mongoose.Schema(
   }
 );
 
-schema.plugin(AutoIncrement, { inc_field: "id" });
+schema.plugin(AutoIncrement, { inc_field: "example_id" });
 
 export const Example = mongoose.model<IExampleModel>("Example", schema);

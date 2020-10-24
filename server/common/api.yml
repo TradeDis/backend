@@ -34,6 +34,29 @@ paths:
       responses:
         201:
           description: Example created
+  /users:
+      get:
+        tags:
+          - Examples
+        description: Fetch all examples
+        responses:
+          200:
+            description: Returns all examples
+            content: {}
+      post:
+        tags:
+          - Examples
+        description: Create a new example
+        requestBody:
+          description: an example
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExampleBody"
+          required: true
+        responses:
+          201:
+            description: Example created
   /examples/{id}:
     get:
       tags:
