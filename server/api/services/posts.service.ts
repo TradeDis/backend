@@ -12,7 +12,7 @@ export class PostsService {
   async getById(id: number): Promise<IPostModel> {
     l.info(`fetch post with id ${id}`);
     const post = (await Post.findOne(
-      { id: id },
+      { post_id: id },
       "-_id -__v"
     ).lean()) as IPostModel;
     return post;
