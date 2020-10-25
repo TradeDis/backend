@@ -27,10 +27,7 @@ export class Controller {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const doc = await PostsService.create(req.body);
-      return res
-        .status(201)
-        .location(`/api/v1/examples/${doc.id}`)
-        .end();
+      return res.status(201).location(`/api/v1/examples/${doc.id}`).end();
     } catch (err) {
       return next(err);
     }
