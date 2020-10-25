@@ -32,5 +32,18 @@ export class Controller {
       return next(err);
     }
   }
+
+  async updateById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const doc = await UsersService.updateById(
+        req.body,
+        parseInt(req.params.user_id)
+      );
+      return res.status(201).json(doc);
+    } catch (err) {
+      return next(err);
+    }
+  }
 }
+
 export default new Controller();

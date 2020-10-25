@@ -24,6 +24,12 @@ export class UsersService {
     const doc = (await user.save()) as IUserModel;
     return doc;
   }
+
+  async updateById(data: IUserModel, id: number): Promise<IUserModel> {
+    l.info(`update users data ${data}`);
+    const filter = { user_id: id };
+    return (await User.findOneAndUpdate(filter, data).exec()) as IUserModel;
+  }
 }
 
 export default new UsersService();
