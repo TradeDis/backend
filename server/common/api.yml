@@ -35,28 +35,28 @@ paths:
         201:
           description: Example created
   /users:
-      get:
-        tags:
-          - Users
-        description: Fetch all users
-        responses:
-          200:
-            description: Returns all users
-            content: {}
-      post:
-        tags:
-          - Users
-        description: Create a new user
-        requestBody:
-          description: an user
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserBody"
-          required: true
-        responses:
-          201:
-            description: User created
+    get:
+      tags:
+        - Users
+      description: Fetch all users
+      responses:
+        200:
+          description: Returns all users
+          content: {}
+    post:
+      tags:
+        - Users
+      description: Create a new user
+      requestBody:
+        description: an user
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserBody"
+        required: true
+      responses:
+        201:
+          description: User created
   /examples/{id}:
     get:
       tags:
@@ -94,21 +94,21 @@ components:
         - email
         - password
       properties:
-        user_id: 
+        user_id:
           type: number
-        username: 
+        username:
           type: string
-        first_name: 
+        first_name:
           type: string
-        last_name: 
+        last_name:
           type: string
-        email: 
+        email:
           type: string
-        password: 
+        password:
           type: string
-        address: 
+        address:
           type: string
-        avatar: 
+        avatar:
           type: string
         reviews:
           type: array
@@ -121,18 +121,18 @@ components:
                 type: string
               rating:
                 type: integer
-              created_by: 
+              created_by:
                 type: object
                 properties:
-                  reviewer_id: 
+                  reviewer_id:
                     type: number
-                  username: 
+                  username:
                     type: string
-                  first_name: 
+                  first_name:
                     type: string
-                  last_name: 
-                    type: string 
-                  avatar: 
+                  last_name:
+                    type: string
+                  avatar:
                     type: string
     ExampleBody:
       title: example
@@ -143,6 +143,5 @@ components:
         name:
           type: string
           example: no_stress
-
 
   # https://swagger.io/docs/specification/data-models/data-types/#array for more
