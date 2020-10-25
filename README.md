@@ -141,6 +141,41 @@ yarn typecheck
 
 ---
 
+## Schema
+
+### User
+
+```javascript
+{
+    user_id: { type: Number, unique: true },
+    username: String,
+    first_name: String,
+    last_name: String,
+    email: String,
+    password: String,
+    address: String,
+    avatar: String,
+    reviews: [
+      {
+        review_id: { type: Number, unique: true },
+        date: Date,
+        review: String,
+        rating: Number,
+        created_by: {
+            reviewer_id: Number,
+            username: String,
+            first_name: String,
+            last_name: String,
+            avatar: String,
+        },
+      }
+    ],
+}
+
+```
+
+---
+
 ## Notes
 
 ### Moongose
