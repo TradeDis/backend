@@ -37,26 +37,26 @@ paths:
   /users:
       get:
         tags:
-          - Examples
-        description: Fetch all examples
+          - Users
+        description: Fetch all users
         responses:
           200:
-            description: Returns all examples
+            description: Returns all users
             content: {}
       post:
         tags:
-          - Examples
-        description: Create a new example
+          - Users
+        description: Create a new user
         requestBody:
-          description: an example
+          description: an user
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExampleBody"
+                $ref: "#/components/schemas/UserBody"
           required: true
         responses:
           201:
-            description: Example created
+            description: User created
   /examples/{id}:
     get:
       tags:
@@ -85,6 +85,55 @@ paths:
           content: {}
 components:
   schemas:
+    UserBody:
+      title: user
+      required:
+        - username
+        - first_name
+        - last_name
+        - email
+        - password
+      properties:
+        user_id: 
+          type: number
+        username: 
+          type: string
+        first_name: 
+          type: string
+        last_name: 
+          type: string
+        email: 
+          type: string
+        password: 
+          type: string
+        address: 
+          type: string
+        avatar: 
+          type: string
+        reviews:
+          type: array
+          items:
+            type: object
+            properties:
+              review_id:
+                type: integer
+              review:
+                type: string
+              rating:
+                type: integer
+              created_by: 
+                type: object
+                properties:
+                  reviewer_id: 
+                    type: number
+                  username: 
+                    type: string
+                  first_name: 
+                    type: string
+                  last_name: 
+                    type: string 
+                  avatar: 
+                    type: string
     ExampleBody:
       title: example
       required:
@@ -94,3 +143,6 @@ components:
         name:
           type: string
           example: no_stress
+
+
+  # https://swagger.io/docs/specification/data-models/data-types/#array for more

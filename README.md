@@ -155,12 +155,16 @@ yarn typecheck
     password: String,
     address: String,
     avatar: String,
+    created_at: Date,
+    updated_at: Date,
     reviews: [
       {
         review_id: { type: Number, unique: true },
         date: Date,
         review: String,
         rating: Number,
+        created_at: Date,
+        updated_at: Date,
         created_by: {
             reviewer_id: Number,
             username: String,
