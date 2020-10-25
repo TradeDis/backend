@@ -9,7 +9,7 @@ export interface IConversationsModel extends mongoose.Document {
 
 const conversations = new mongoose.Schema(
   {
-    id: { type: Number, unique: true },
+    conversation_id: { type: Number, unique: true },
     // TODO
   },
   {
@@ -17,6 +17,6 @@ const conversations = new mongoose.Schema(
   }
 );
 
-conversations.plugin(AutoIncrement, { inc_field: "id" });
+conversations.plugin(AutoIncrement, { inc_field: "conversation_id" });
 
 export const Post = mongoose.model<IConversationsModel>("Post", conversations);

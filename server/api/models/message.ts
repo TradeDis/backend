@@ -9,7 +9,7 @@ export interface IMessageModel extends mongoose.Document {
 
 const messages = new mongoose.Schema(
   {
-    id: { type: Number, unique: true },
+    message_id: { type: Number, unique: true },
     // TODO
   },
   {
@@ -17,6 +17,6 @@ const messages = new mongoose.Schema(
   }
 );
 
-messages.plugin(AutoIncrement, { inc_field: "id" });
+messages.plugin(AutoIncrement, { inc_field: "message_id" });
 
 export const Message = mongoose.model<IMessageModel>("Post", messages);
