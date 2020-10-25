@@ -4,8 +4,29 @@ import sequence from "mongoose-sequence";
 const AutoIncrement = sequence(mongoose);
 
 export interface IUserModel extends mongoose.Document {
-  id: number;
-  name: string;
+  user_id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  address: string;
+  avatar: string;
+  reviews: [
+    {
+      review_id: number;
+      date: string;
+      review: string;
+      rating: number;
+      created_by: {
+        reviewer_id: number;
+        username: string;
+        first_name: string;
+        last_name: string;
+        avatar: string;
+      };
+    }
+  ];
 }
 
 const reviewer = new mongoose.Schema({
