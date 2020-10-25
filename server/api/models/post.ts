@@ -9,7 +9,7 @@ export interface IPostModel extends mongoose.Document {
 
 const posts = new mongoose.Schema(
   {
-    id: { type: Number, unique: true },
+    post_id: { type: Number, unique: true },
     // TODO
   },
   {
@@ -17,6 +17,6 @@ const posts = new mongoose.Schema(
   }
 );
 
-posts.plugin(AutoIncrement, { inc_field: "id" });
+posts.plugin(AutoIncrement, { inc_field: "post_id" });
 
 export const Post = mongoose.model<IPostModel>("Post", posts);
