@@ -33,6 +33,8 @@ export class Controller {
     }
   }
 
+  //this function calls updateById function in service
+  //sends the user_id to the function and gets back a newly updated user model which it sends back to database
   async updateById(req: Request, res: Response, next: NextFunction) {
     try {
       const doc = await UsersService.updateById(

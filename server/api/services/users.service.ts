@@ -25,6 +25,7 @@ export class UsersService {
     return doc;
   }
 
+  //this function uses the user_id and returns an updated userModel
   async updateById(data: IUserModel, id: number): Promise<IUserModel> {
     l.info(`update users data ${data}`);
     const filter = { user_id: id };
