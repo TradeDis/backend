@@ -32,5 +32,20 @@ export class Controller {
       return next(err);
     }
   }
+
+  //this function calls updateById function in service
+  //sends the user_id to the function and gets back a newly updated user model which it sends back to database
+  async updateById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const doc = await UsersService.updateById(
+        req.body,
+        parseInt(req.params.user_id)
+      );
+      return res.status(201).json(doc);
+    } catch (err) {
+      return next(err);
+    }
+  }
 }
+
 export default new Controller();
