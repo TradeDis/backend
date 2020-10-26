@@ -47,6 +47,19 @@ export class Controller {
       return next(err);
     }
   }
+
+  async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body;
+      // validation would be handled in the User model
+      const user = await UsersService.getBy("email", email);
+      // prevent user from being null
+      const isAuth = user ? user.password == password : false;
+      return res.status(200).json({ result: isAuth, user });
+    } catch (err) {
+      return next(err);
+    }
+  }
 }
 
 export default new Controller();

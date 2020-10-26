@@ -44,7 +44,6 @@ const reviewer = new mongoose.Schema({
 
 const review = new mongoose.Schema(
   {
-    review_id: { type: Number, unique: true },
     created_by: reviewer,
     review: String,
     rating: Number,
@@ -53,8 +52,6 @@ const review = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
   }
 );
-
-review.plugin(AutoIncrement, { inc_field: "review_id" });
 
 const users = new mongoose.Schema(
   {
@@ -84,7 +81,7 @@ const users = new mongoose.Schema(
     password: { type: String, required: true },
     address: String,
     avatar: String,
-    reviews: [review],
+    reviews: { type: [review], required: false },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
