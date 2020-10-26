@@ -26,8 +26,9 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      // validation would be handled in the User model
       const doc = await UsersService.create(req.body);
-      return res.status(201).location(`/api/v1/examples/${doc.id}`).end();
+      return res.status(201).location(`/api/v1/users/${doc.user_id}`).json(doc);
     } catch (err) {
       return next(err);
     }

@@ -12,7 +12,7 @@ export class UsersService {
   async getById(id: number): Promise<IUserModel> {
     l.info(`fetch user with id ${id}`);
     const user = (await User.findOne(
-      { id: id },
+      { user_id: id },
       "-_id -__v"
     ).lean()) as IUserModel;
     return user;
