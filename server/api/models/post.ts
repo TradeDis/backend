@@ -7,7 +7,7 @@ export interface IPostModel extends mongoose.Document {
   post_id: number;
   title: string;
   location: string;
-  requesting: boolean;
+  requesting: boolean; // = true if post is requesting an item, = false if post is trading and item
   content: string;
   created_by: {
     user_id: number;

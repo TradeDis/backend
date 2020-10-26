@@ -10,7 +10,7 @@ export class PostsService {
   }
 
   async getById(id: number): Promise<IPostModel> {
-    l.info(`fetch post with id ${id}`);
+    l.info(`fetch post with post_id ${id}`);
     const post = (await Post.findOne(
       { post_id: id },
       "-_id -__v"
