@@ -57,11 +57,11 @@ review.plugin(AutoIncrement, { inc_field: "review_id" });
 const users = new mongoose.Schema(
   {
     user_id: { type: Number, unique: true },
-    username: String,
-    first_name: String,
-    last_name: String,
-    email: String,
-    password: String,
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
+    password: { type: String, required: true },
     address: String,
     avatar: String,
     reviews: [review],
