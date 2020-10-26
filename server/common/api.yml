@@ -80,20 +80,20 @@ paths:
       responses:
         201:
           description: Post created
-  /posts/{id}:
+  /posts/{post_id}:
     get:
       tags:
         - Posts
       parameters:
-        - name: id
+        - name: post_id
           in: path
-          description: The id of the post to retrieve
+          description: The post_id of the post to retrieve
           required: true
           schema:
             type: integer
       responses:
         200:
-          description: Return the post with the specified id
+          description: Return the post with the specified post_id
           content: {}
         404:
           description: Post not found
