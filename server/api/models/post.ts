@@ -6,7 +6,8 @@ const AutoIncrement = sequence(mongoose);
 export interface IPostModel extends mongoose.Document {
   post_id: number;
   title: string;
-  type: string;
+  location: string;
+  requesting: boolean;
   content: string;
   created_by: {
     user_id: number;
@@ -35,36 +36,37 @@ const poster = new mongoose.Schema({
   user_id: Number,
   username: String,
   full_name: String,
-  avatar: String,
+  avatar: String
 });
 
 const commenter = new mongoose.Schema({
   user_id: Number,
   username: String,
   full_name: String,
-  avatar: String,
+  avatar: String
 });
 
 const comment = new mongoose.Schema({
   comment_id: String,
   created_by: commenter,
-  comment: String,
+  comment: String
 });
 
 const posts = new mongoose.Schema(
   {
     post_id: { type: Number, unique: true },
     title: String,
-    type: String,
+    location: String,
+    requesting: Boolean,
     content: String,
     created_by: poster,
     date: Date,
     status: String,
     tags: [String],
-    comments: [comment],
+    comments: [comment]
   },
   {
-    collection: "posts",
+    collection: "posts"
   }
 );
 
