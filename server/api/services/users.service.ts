@@ -26,9 +26,9 @@ export class UsersService {
   }
 
   //this function uses the user_id and returns an updated userModel
-  async updateById(data: IUserModel, id: number): Promise<IUserModel> {
+  async updateById(data: IUserModel, user_id: number): Promise<IUserModel> {
     l.info(`update users data ${data}`);
-    const filter = { user_id: id };
+    const filter = { user_id: user_id };
     return (await User.findOneAndUpdate(filter, data).exec()) as IUserModel;
   }
 }
