@@ -13,11 +13,11 @@ export class Controller {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const doc = await UsersService.getById(parseInt(req.params.id));
+      const doc = await UsersService.getById(parseInt(req.params.user_id));
       if (doc) {
         return res.status(200).json(doc);
       }
-      const errors = [{ message: "Example not found" }];
+      const errors = [{ message: "User not found" }];
       return res.status(404).json({ errors });
     } catch (err) {
       return next(err);

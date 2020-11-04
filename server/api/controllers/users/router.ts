@@ -5,5 +5,5 @@ export default express
   .post("/", controller.create)
   .post("/login", controller.login)
   .get("/", controller.getAll)
-  .get("/:id", controller.getById)
+  .get("/:user_id", controller.getById)
   .put("/:user_id", controller.updateById);

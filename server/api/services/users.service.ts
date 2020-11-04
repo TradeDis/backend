@@ -9,11 +9,11 @@ export class UsersService {
     return users;
   }
 
-  async getById(id: number): Promise<IUserModel> {
-    l.info(`fetch user with id ${id}`);
+  async getById(user_id: number): Promise<IUserModel> {
+    l.info(`fetch user with id ${user_id}`);
     const user = (await User.findOne(
-      { user_id: id },
-      "-_id -__v"
+      { user_id: user_id },
+      "-_user_id -__v"
     ).lean()) as IUserModel;
     return user;
   }
@@ -24,6 +24,7 @@ export class UsersService {
     const doc = (await user.save()) as IUserModel;
     return doc;
   }
+  i;
 
   //this function uses the user_id and returns an updated userModel
   async updateById(data: IUserModel, user_id: number): Promise<IUserModel> {

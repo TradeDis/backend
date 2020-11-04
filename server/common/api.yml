@@ -57,6 +57,47 @@ paths:
       responses:
         201:
           description: User created
+  /posts:
+    get:
+      tags:
+        - Posts
+      description: Fetch all posts
+      responses:
+        200:
+          description: Returns all posts
+          content: {}
+    post:
+      tags:
+        - Posts
+      description: Create a new post
+      requestBody:
+        description: a post
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostBody"
+        required: true
+      responses:
+        201:
+          description: Post created
+  /posts/{post_id}:
+    get:
+      tags:
+        - Posts
+      parameters:
+        - name: post_id
+          in: path
+          description: The post_id of the post to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Return the post with the specified post_id
+          content: {}
+        404:
+          description: Post not found
+          content: {}
   /examples/{id}:
     get:
       tags:
@@ -101,6 +142,23 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: User_model
+          content: {}
+        404:
+          description: User not found
+          content: {}
+    get:
+      tags:
+        - Get user by id
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user to retrieve
+          required: true
+          schema:
+            type: number
       responses:
         200:
           description: User_model
@@ -168,5 +226,4 @@ components:
         name:
           type: string
           example: no_stress
-
   # https://swagger.io/docs/specification/data-models/data-types/#array for more
