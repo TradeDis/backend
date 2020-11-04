@@ -124,6 +124,31 @@ paths:
         200:
           description: Return the API specification
           content: {}
+  /users/{user_id}:
+    put:
+      tags:
+        - Users
+      requestBody:
+        description: updated user model
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserBody"
+        required: true
+      parameters:
+        - name: user_id
+          in: path
+          description: user_id to update
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: User_model
+          content: {}
+        404:
+          description: User not found
+          content: {}
 components:
   schemas:
     UserBody:
