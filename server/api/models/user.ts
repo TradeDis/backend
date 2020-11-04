@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import sequence from "mongoose-sequence";
+const validator = require("mongoose-validator");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const AutoIncrement = sequence(mongoose);
 
@@ -42,7 +44,6 @@ const reviewer = new mongoose.Schema({
 
 const review = new mongoose.Schema(
   {
-    review_id: { type: Number, unique: true },
     created_by: reviewer,
     review: String,
     rating: Number,
@@ -52,19 +53,35 @@ const review = new mongoose.Schema(
   }
 );
 
-review.plugin(AutoIncrement, { inc_field: "review_id" });
-
 const users = new mongoose.Schema(
   {
     user_id: { type: Number, unique: true },
-    username: String,
-    first_name: String,
-    last_name: String,
-    email: String,
-    password: String,
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: [
+        validator({
+          validator: "isEmail",
+          message: "Oops..please enter valid email",
+        }),
+      ],
+    },
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
+    password: { type: String, required: true },
     address: String,
     avatar: String,
-    reviews: [review],
+    reviews: { type: [review], required: false },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
@@ -73,5 +90,7 @@ const users = new mongoose.Schema(
 );
 
 users.plugin(AutoIncrement, { inc_field: "user_id" });
+// Apply the uniqueValidator plugin to userSchema.
+users.plugin(uniqueValidator);
 
 export const User = mongoose.model<IUserModel>("User", users);

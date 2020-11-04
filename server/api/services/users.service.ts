@@ -32,6 +32,14 @@ export class UsersService {
     const filter = { user_id: user_id };
     return (await User.findOneAndUpdate(filter, data).exec()) as IUserModel;
   }
+
+  async getBy(key: string, value: any): Promise<IUserModel> {
+    const user = (await User.findOne(
+      { [key]: value },
+      "-_id -__v"
+    ).lean()) as IUserModel;
+    return user;
+  }
 }
 
 export default new UsersService();

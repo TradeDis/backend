@@ -26,8 +26,9 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      // validation would be handled in the User model
       const doc = await UsersService.create(req.body);
-      return res.status(201).location(`/api/v1/examples/${doc.id}`).end();
+      return res.status(201).location(`/api/v1/users/${doc.user_id}`).json(doc);
     } catch (err) {
       return next(err);
     }
@@ -42,6 +43,19 @@ export class Controller {
         parseInt(req.params.user_id)
       );
       return res.status(201).json(doc);
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body;
+      // validation would be handled in the User model
+      const user = await UsersService.getBy("email", email);
+      // prevent user from being null
+      const isAuth = user ? user.password == password : false;
+      return res.status(200).json({ result: isAuth, user });
     } catch (err) {
       return next(err);
     }
