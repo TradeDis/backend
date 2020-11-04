@@ -123,7 +123,7 @@ paths:
           description: User_model
           content: {}
         404:
-          description: Example not found
+          description: User not found
           content: {}
 components:
   schemas:
