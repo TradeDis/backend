@@ -108,6 +108,23 @@ paths:
         404:
           description: User not found
           content: {}
+    get:
+      tags:
+        - Get user by id
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user to retrieve
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: User_model
+          content: {}
+        404:
+          description: Example not found
+          content: {}
 components:
   schemas:
     UserBody:
