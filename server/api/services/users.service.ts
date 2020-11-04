@@ -23,7 +23,8 @@ export class UsersService {
     const user = new User(data);
     const doc = (await user.save()) as IUserModel;
     return doc;
-  }i
+  }
+  i;
 
   //this function uses the user_id and returns an updated userModel
   async updateById(data: IUserModel, user_id: number): Promise<IUserModel> {

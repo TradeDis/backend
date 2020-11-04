@@ -14,8 +14,6 @@ export class Controller {
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const doc = await UsersService.getById(parseInt(req.params.user_id));
-      console.log(doc)
-      console.log("gjsdjgsj")
       if (doc) {
         return res.status(200).json(doc);
       }
