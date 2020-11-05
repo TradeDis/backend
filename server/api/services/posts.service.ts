@@ -24,6 +24,15 @@ export class PostsService {
     const doc = (await post.save()) as IPostModel;
     return doc;
   }
+
+  //this function uses the post_id and returns an updated postModel
+  async updatePostById(data: IPostModel, post_id: number): Promise<IPostModel> {
+    l.info(`update users data ${data}`);
+    const filter = { post_id: post_id };
+    return (await Post.findOneAndUpdate(filter, data).exec()) as IPostModel;
+  }
+
+
 }
 
 export default new PostsService();

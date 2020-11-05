@@ -4,4 +4,5 @@ export default express
   .Router()
   .post("/", controller.create)
   .get("/", controller.getAll)
-  .get("/:post_id", controller.getById);
+  .get("/:post_id", controller.getById)
+  .put("/:post_id", controller.updatePostById);

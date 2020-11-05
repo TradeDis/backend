@@ -32,5 +32,17 @@ export class Controller {
       return next(err);
     }
   }
+
+  async updatePostById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const doc = await PostsService.updatePostById(req.body, parseInt(req.params.post_id) );
+      return res.status(201).json(doc);
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+
+
 }
 export default new Controller();
