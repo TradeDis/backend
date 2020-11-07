@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import sequence from "mongoose-sequence";
-const validator = require("mongoose-validator");
 const uniqueValidator = require("mongoose-unique-validator");
+import { isEmail } from "validator";
 
 const AutoIncrement = sequence(mongoose);
 
@@ -52,7 +52,14 @@ const review = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
   }
 );
-
+var validateEmail = function (email) {
+  if (email.endsWith("@uwaterloo.ca")) {
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(email);
+  } else {
+    return false;
+  }
+};
 const users = new mongoose.Schema(
   {
     user_id: { type: Number, unique: true },
@@ -70,10 +77,11 @@ const users = new mongoose.Schema(
       lowercase: true,
       trim: true,
       validate: [
-        validator({
-          validator: "isEmail",
-          message: "Oops..please enter valid email",
-        }),
+        { validator: isEmail, message: "Oops..please enter valid email" },
+        {
+          validator: validateEmail,
+          message: "Oops..please enter a valid University of Waterloo email",
+        },
       ],
     },
     first_name: { type: String, required: true },
