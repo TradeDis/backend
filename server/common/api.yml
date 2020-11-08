@@ -168,6 +168,8 @@ paths:
           content: {}
 components:
   schemas:
+    PostBody:
+      title: post
     UserBody:
       title: user
       required:
