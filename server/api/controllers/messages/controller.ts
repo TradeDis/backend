@@ -1,6 +1,25 @@
 import MessagesService from "../../services/messages.service";
 import { Request, Response, NextFunction } from "express";
 
+var app = require("express")();
+var http = require("http").createServer(app);
+var io = require("socket.io")(http);
+console.log(__dirname);
+// app.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/index.html");
+// });
+
+let sockets = [];
+io.on("connection", (socket) => {
+  console.log("a user connected " + socket.id);
+  sockets.push(socket);
+  console.log(sockets.map((socket) => socket.id));
+});
+
+http.listen(4000, () => {
+  console.log("listening on *:4000");
+});
+
 export class Controller {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
@@ -50,6 +69,9 @@ export class Controller {
       req.body.conversation_id = parseInt(req.params.conversation_id);
       // validation would be handled in the Message model
       const doc = await MessagesService.create(req.body);
+      sockets.forEach((socket) => {
+        socket.emit("chat", "hi");
+      });
       return res.status(201).json(doc);
     } catch (err) {
       return next(err);

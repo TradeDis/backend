@@ -9,10 +9,12 @@ import l from "./logger";
 import morgan from "morgan";
 import { IDatabase } from "./database";
 
-const app = express();
-
 export default class ExpressServer {
+  app: Application;
+
   constructor() {
+    const app = express();
+
     const root = path.normalize(__dirname + "/../..");
     app.set("appPath", root + "client");
     app.use(morgan("dev"));
@@ -25,10 +27,11 @@ export default class ExpressServer {
     );
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(express.static(`${root}/public`));
+    this.app = app;
   }
 
   router(routes: (app: Application) => void): ExpressServer {
-    installValidator(app, routes);
+    installValidator(this.app, routes);
     return this;
   }
 
@@ -38,25 +41,13 @@ export default class ExpressServer {
   }
 
   listen(p: string | number = process.env.PORT): Application {
-    var WebSocketServer = require("websocket").server;
-    var http = require("http");
-
-    var server = http.createServer(function (request, response) {
-      console.log(new Date() + " Received request for " + request.url);
-      response.writeHead(404);
-      response.end();
-    });
-    server.listen(8080, function () {
-      console.log(new Date() + " Server is listening on port 8080");
-    });
-
     const welcome = (port) => () =>
       l.info(
         `up and running in ${
           process.env.NODE_ENV || "development"
         } @: ${os.hostname()} on port: ${port}`
       );
-    http.createServer(app).listen(p, welcome(p));
-    return app;
+    http.createServer(this.app).listen(p, welcome(p));
+    return this.app;
   }
 }
