@@ -98,6 +98,30 @@ paths:
         404:
           description: Post not found
           content: {}
+    put:
+      tags:
+        - Posts
+      requestBody:
+        description: updating a trade post
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostBody"
+        required: true
+      parameters:
+        - name: post_id
+          in: path
+          description: post_id to update
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Updated Post_model
+          content: {}
+        404:
+          description: Post not found
+          content: {}
   /examples/{id}:
     get:
       tags:
