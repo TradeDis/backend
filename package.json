@@ -26,6 +26,7 @@
     "mongoose-validator": "^2.1.0",
     "morgan": "1.10.0",
     "pino": "6.7.0",
+    "socket.io": "^3.0.1",
     "websocket": "^1.0.32"
   },
   "devDependencies": {
