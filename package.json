@@ -25,7 +25,8 @@
     "mongoose-unique-validator": "^2.0.3",
     "mongoose-validator": "^2.1.0",
     "morgan": "1.10.0",
-    "pino": "6.7.0"
+    "pino": "6.7.0",
+    "websocket": "^1.0.32"
   },
   "devDependencies": {
     "@types/bluebird": "3.5.32",

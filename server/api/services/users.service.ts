@@ -3,9 +3,10 @@ import l from "../../common/logger";
 import { User, IUserModel } from "../models/user";
 
 export class UsersService {
-  async getAll(): Promise<IUserModel[]> {
+  async getAll(): Promise<string[]> {
     l.info("fetch all users");
-    const users = (await User.find(null, "-_id -__v").lean()) as IUserModel[];
+    const users = (await User.find(null, "-_id -__v").lean()) as any[];
+    // const usersname = users.map((user) => user.getFullName());
     return users;
   }
 

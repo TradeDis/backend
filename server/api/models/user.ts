@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
 import sequence from "mongoose-sequence";
 const uniqueValidator = require("mongoose-unique-validator");
 import { isEmail } from "validator";
@@ -8,6 +8,7 @@ const AutoIncrement = sequence(mongoose);
 export interface IUserModel extends mongoose.Document {
   user_id: number;
   username: string;
+  name: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -96,6 +97,22 @@ const users = new mongoose.Schema(
     collection: "users",
   }
 );
+
+class UserClass {
+  first_name!: string;
+  last_name!: string;
+  // `fullName` becomes a virtual
+  get name() {
+    return `${this.first_name} ${this.last_name}`;
+  }
+
+  // `getFullName()` becomes a document method
+  getFullName() {
+    return `${this.first_name} ${this.last_name}`;
+  }
+}
+
+users.loadClass(UserClass);
 
 users.plugin(AutoIncrement, { inc_field: "user_id" });
 // Apply the uniqueValidator plugin to userSchema.
