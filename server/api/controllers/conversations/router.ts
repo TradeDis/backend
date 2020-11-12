@@ -7,7 +7,7 @@ export default express
   // .post("/login", controller.login)
   .get("/", controller.getAll)
   .get("/:conversation_id/messages", message_controller.getAllByConversationId)
-  .post("/:conversation_id/messages/:socket_id", message_controller.create);
+  .post("/:conversation_id/messages", message_controller.create);
 
 // .get("/:user_id", controller.getById)
 // .put("/:user_id", controller.updateById);

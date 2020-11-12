@@ -9,15 +9,33 @@ console.log(__dirname);
 //   res.sendFile(__dirname + "/index.html");
 // });
 
-let sockets = {};
+let sockets_room = {};
+let rooms_sockets = {};
 io.on("connection", (socket) => {
   console.log("a user connected " + socket.id);
-  sockets[socket.id] = socket;
-  console.log(Object.keys(sockets));
-  socket.on("disconnect", (socket) => {
-    console.log("disconnected");
-    delete sockets[socket.id];
-    console.log(Object.keys(sockets));
+  socket.join("room", function () {
+    console.log(socket.id + " now in rooms ", socket.rooms);
+  });
+
+  socket.on("add_room", (conversation_id) => {
+    console.log("add_room", socket.id);
+    if (rooms_sockets[conversation_id]) {
+      rooms_sockets[conversation_id][socket.id] = socket;
+    } else {
+      rooms_sockets[conversation_id] = { [socket.id]: socket };
+    }
+    sockets_room[socket.id] = conversation_id;
+    console.log(Object.keys(sockets_room));
+    console.log(sockets_room);
+  });
+  // console.log(Object.keys(sockets));
+  socket.on("disconnect", (reason) => {
+    console.log("disconnected ", socket.id);
+    if (rooms_sockets[sockets_room[socket.id]])
+      delete rooms_sockets[sockets_room[socket.id]][socket.id];
+    if (sockets_room[socket.id]) delete sockets_room[socket.id];
+    console.log(Object.keys(rooms_sockets));
+    console.log(sockets_room);
     // else the socket will automatically try to reconnect
   });
 });
@@ -72,13 +90,23 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.params.socket_id);
+      console.log(req.query.socket_id);
       req.body.conversation_id = parseInt(req.params.conversation_id);
       // validation would be handled in the Message model
       const doc = await MessagesService.create(req.body);
-      Object.values(sockets).forEach((socket: any) => {
-        socket.emit("chat", "hi");
-      });
+      Object.values(rooms_sockets[req.params.conversation_id]).forEach(
+        (socket: any) => {
+          if (socket.id != req.query.socket_id) {
+            console.log(
+              "updating ",
+              socket.id,
+              " to ",
+              req.body.conversation_id
+            );
+            socket.emit("update", "hi");
+          }
+        }
+      );
       return res.status(201).json(doc);
     } catch (err) {
       return next(err);
