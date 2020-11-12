@@ -9,11 +9,17 @@ console.log(__dirname);
 //   res.sendFile(__dirname + "/index.html");
 // });
 
-let sockets = [];
+let sockets = {};
 io.on("connection", (socket) => {
   console.log("a user connected " + socket.id);
-  sockets.push(socket);
-  console.log(sockets.map((socket) => socket.id));
+  sockets[socket.id] = socket;
+  console.log(Object.keys(sockets));
+  socket.on("disconnect", (socket) => {
+    console.log("disconnected");
+    delete sockets[socket.id];
+    console.log(Object.keys(sockets));
+    // else the socket will automatically try to reconnect
+  });
 });
 
 http.listen(4000, () => {
@@ -66,10 +72,11 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log(req.params.socket_id);
       req.body.conversation_id = parseInt(req.params.conversation_id);
       // validation would be handled in the Message model
       const doc = await MessagesService.create(req.body);
-      sockets.forEach((socket) => {
+      Object.values(sockets).forEach((socket: any) => {
         socket.emit("chat", "hi");
       });
       return res.status(201).json(doc);
