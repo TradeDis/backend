@@ -5,10 +5,7 @@ import { Message, IMessageModel } from "../models/message";
 export class MessagesService {
   async getAll(): Promise<IMessageModel[]> {
     l.info("fetch all messages");
-    const messages = (await Message.find(
-      null,
-      "-_id -__v"
-    ).lean()) as IMessageModel[];
+    const messages = (await Message.find(null).lean()) as IMessageModel[];
     return messages;
   }
 
@@ -17,7 +14,7 @@ export class MessagesService {
     limit: number = 20
   ): Promise<IMessageModel[]> {
     l.info("fetch all messages");
-    const messages = (await Message.find({ conversation_id }, "-_id -__v")
+    const messages = (await Message.find({ conversation_id })
       .lean()
       .limit(limit)
       .sort({ createdAt: -1 })) as IMessageModel[];
