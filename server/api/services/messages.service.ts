@@ -31,7 +31,7 @@ export class MessagesService {
   }
 
   async create(data: IMessageModel): Promise<IMessageModel[]> {
-    l.info(`create message with data ${JSON.stringify(data)}`);
+    // l.info(`create message with data ${JSON.stringify(data)}`);
     const message = new Message(data);
     const doc = (await message.save()) as IMessageModel;
     const messages = await this.getAllByConversationId(doc.conversation_id);

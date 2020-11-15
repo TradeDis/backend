@@ -8,9 +8,12 @@ import installValidator from "./openapi";
 import l from "./logger";
 import morgan from "morgan";
 import { IDatabase } from "./database";
+import { socket_setup } from "../api/controllers/messages/controller";
 
 export default class ExpressServer {
   app: Application;
+  io: any;
+  http: any;
 
   constructor() {
     const app = express();
@@ -40,6 +43,12 @@ export default class ExpressServer {
     return this;
   }
 
+  socket(): ExpressServer {
+    this.http = require("http").createServer(this.app);
+    this.io = require("socket.io")(this.http);
+    return this;
+  }
+
   listen(p: string | number = process.env.PORT): Application {
     const welcome = (port) => () =>
       l.info(
@@ -47,7 +56,8 @@ export default class ExpressServer {
           process.env.NODE_ENV || "development"
         } @: ${os.hostname()} on port: ${port}`
       );
-    http.createServer(this.app).listen(p, welcome(p));
+    socket_setup(this.io);
+    this.http.listen(p, welcome(p));
     return this.app;
   }
 }
