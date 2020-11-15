@@ -10,7 +10,7 @@ const connectionString =
     : process.env.NODE_ENV === "test"
     ? process.env.MONGODB_URI_TEST ||
       "mongodb://localhost:27017/express-mongoose-template"
-    : process.env.MONGODB_URI_DEV ||
+    : process.env.MONGODB_URI ||
       "mongodb://localhost:27017/express-mongoose-template-test";
 
 const db = new Database(connectionString);

@@ -3,8 +3,14 @@ echo
 echo "Compiling..."
 yarn compile
 
-echo "Success"
+echo "Configuring..."
 echo
+echo "Setting the Heroku variables"
+heroku config:set \
+  NODE_ENV="production" \
+  MONGODB_URI="mongodb+srv://tradedis:tradedis2020@cluster0.ieu4n.mongodb.net/development?retryWrites=true&w=majority" \
+  -a "tradis"
+
 echo
 echo "Pushing.."
 git push heroku feat/inbox:master
