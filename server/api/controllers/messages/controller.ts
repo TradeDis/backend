@@ -1,50 +1,50 @@
 import MessagesService from "../../services/messages.service";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, Application } from "express";
+import l from "../../../common/logger";
 
-var app = require("express")();
-var http = require("http").createServer(app);
-var io = require("socket.io")(http);
-console.log(__dirname);
-// app.get("/", (req, res) => {
-//   res.sendFile(__dirname + "/index.html");
-// });
+l.info("message controller");
 
 let sockets_room = {};
 let rooms_sockets = {};
-io.on("connection", (socket) => {
-  console.log("a user connected " + socket.id);
-  socket.join("room", function () {
-    console.log(socket.id + " now in rooms ", socket.rooms);
-  });
+export function socket_setup(io) {
+  io.on("connection", (socket) => {
+    console.log("a user connected " + socket.id);
+    socket.join("room", function () {
+      console.log(socket.id + " now in rooms ", socket.rooms);
+    });
 
-  socket.on("add_room", (conversation_id) => {
-    console.log("add_room", socket.id);
-    if (rooms_sockets[conversation_id]) {
-      rooms_sockets[conversation_id][socket.id] = socket;
-    } else {
-      rooms_sockets[conversation_id] = { [socket.id]: socket };
-    }
-    sockets_room[socket.id] = conversation_id;
-    console.log(Object.keys(sockets_room));
-    console.log(sockets_room);
+    socket.on("add_room", (conversation_id) => {
+      console.log("add_room", socket.id);
+      if (rooms_sockets[conversation_id]) {
+        rooms_sockets[conversation_id][socket.id] = socket;
+      } else {
+        rooms_sockets[conversation_id] = { [socket.id]: socket };
+      }
+      sockets_room[socket.id] = conversation_id;
+      console.log(Object.keys(sockets_room));
+      console.log(sockets_room);
+    });
+    // console.log(Object.keys(sockets));
+    socket.on("disconnect", (reason) => {
+      console.log("disconnected ", socket.id);
+      if (rooms_sockets[sockets_room[socket.id]])
+        delete rooms_sockets[sockets_room[socket.id]][socket.id];
+      if (sockets_room[socket.id]) delete sockets_room[socket.id];
+      console.log(Object.keys(rooms_sockets));
+      console.log(sockets_room);
+      // else the socket will automatically try to reconnect
+    });
   });
-  // console.log(Object.keys(sockets));
-  socket.on("disconnect", (reason) => {
-    console.log("disconnected ", socket.id);
-    if (rooms_sockets[sockets_room[socket.id]])
-      delete rooms_sockets[sockets_room[socket.id]][socket.id];
-    if (sockets_room[socket.id]) delete sockets_room[socket.id];
-    console.log(Object.keys(rooms_sockets));
-    console.log(sockets_room);
-    // else the socket will automatically try to reconnect
-  });
-});
-
-http.listen(4000, () => {
-  console.log("listening on *:4000");
-});
+  l.info("Socket updated!");
+}
 
 export class Controller {
+  update(sockets_room, rooms_sockets) {
+    // this.sockets_room = sockets_room;
+    // this.rooms_sockets = rooms_sockets;
+    l.info("Updating rooms...");
+  }
+
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const docs = await MessagesService.getAll();
@@ -94,6 +94,7 @@ export class Controller {
       req.body.conversation_id = parseInt(req.params.conversation_id);
       // validation would be handled in the Message model
       const doc = await MessagesService.create(req.body);
+      console.log("Pushing updating signal....");
       Object.values(rooms_sockets[req.params.conversation_id]).forEach(
         (socket: any) => {
           if (socket.id != req.query.socket_id) {
@@ -109,6 +110,7 @@ export class Controller {
       );
       return res.status(201).json(doc);
     } catch (err) {
+      console.log(err);
       return next(err);
     }
   }
