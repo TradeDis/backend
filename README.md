@@ -45,7 +45,7 @@ cp .env.example .env
 vi .env
 ```
 
-and change the `MONGODB_URI_DEV` to `MONGODB_URI_DEV=mongodb+srv://tradedis:tradedis2020@cluster0.ieu4n.mongodb.net/development?retryWrites=true&w=majority`
+and change the `MONGODB_URI` to `MONGODB_URI=mongodb+srv://tradedis:tradedis2020@cluster0.ieu4n.mongodb.net/development?retryWrites=true&w=majority`
 
 #### Run in _development_ mode:
 
