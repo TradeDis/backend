@@ -12,7 +12,8 @@
     "test:debug": "cross-env NODE_ENV=test mocha --inspect-brk test/**/*.ts --exit",
     "test:junit": "cross-env NODE_ENV=test mocha test/**/*.ts --reporter mocha-junit-reporter --reporter-options mochaFile=./test/test-results.xml --exit",
     "lint": "prettier -c \"{server,test}/**/*.{js,jsx,ts,tsx,json,css,scss,yml,yaml}\" --write",
-    "typecheck": "tsc --noUnusedLocals"
+    "typecheck": "tsc --noUnusedLocals",
+    "deploy": "sh ./heroku-deploy.sh"
   },
   "dependencies": {
     "bluebird": "3.7.2",
