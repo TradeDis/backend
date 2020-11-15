@@ -42,7 +42,7 @@ class MessagesService {
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            logger_1.default.info(`create message with data ${JSON.stringify(data)}`);
+            // l.info(`create message with data ${JSON.stringify(data)}`);
             const message = new message_1.Message(data);
             const doc = (yield message.save());
             const messages = yield this.getAllByConversationId(doc.conversation_id);

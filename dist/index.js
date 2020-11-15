@@ -16,5 +16,5 @@ const connectionString = process.env.NODE_ENV === "production"
         : process.env.MONGODB_URI ||
             "mongodb://localhost:27017/express-mongoose-template-test";
 const db = new database_1.default(connectionString);
-exports.default = new server_1.default().database(db).router(routes_1.default).listen(port);
+exports.default = new server_1.default().database(db).router(routes_1.default).socket().listen(port);
 //# sourceMappingURL=index.js.map
