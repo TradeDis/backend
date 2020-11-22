@@ -11,7 +11,7 @@ const connectionString =
     ? process.env.MONGODB_URI_TEST ||
       "mongodb://localhost:27017/express-mongoose-template"
     : process.env.MONGODB_URI ||
-      "mongodb://localhost:27017/express-mongoose-template-test";
+      "mongodb+srv://tradedis:tradedis2020@cluster0.ieu4n.mongodb.net/development?retryWrites=true&w=majority";
 
 const db = new Database(connectionString);
 export default new Server().database(db).router(routes).socket().listen(port);
