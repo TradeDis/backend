@@ -18,6 +18,10 @@ const conversations = new mongoose_1.default.Schema({
     members: [user],
     // reference to the post
     post_id: Number,
+    latestMessage: {
+        text: String,
+        user: user,
+    },
 }, {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
     collection: "conversations",

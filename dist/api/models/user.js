@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongoose_sequence_1 = __importDefault(require("mongoose-sequence"));
-const validator = require("mongoose-validator");
 const uniqueValidator = require("mongoose-unique-validator");
+const validator_1 = require("validator");
 const AutoIncrement = mongoose_sequence_1.default(mongoose_1.default);
 const reviewer = new mongoose_1.default.Schema({
     reviewer_id: Number,
@@ -23,6 +23,15 @@ const review = new mongoose_1.default.Schema({
 }, {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
 });
+var validateEmail = function (email) {
+    if (email.endsWith("@uwaterloo.ca")) {
+        var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return re.test(email);
+    }
+    else {
+        return false;
+    }
+};
 const users = new mongoose_1.default.Schema({
     user_id: { type: Number, unique: true },
     username: {
@@ -39,10 +48,11 @@ const users = new mongoose_1.default.Schema({
         lowercase: true,
         trim: true,
         validate: [
-            validator({
-                validator: "isEmail",
-                message: "Oops..please enter valid email",
-            }),
+            { validator: validator_1.isEmail, message: "Oops..please enter valid email" },
+            {
+                validator: validateEmail,
+                message: "Oops..please enter a valid University of Waterloo email",
+            },
         ],
     },
     first_name: { type: String, required: true },

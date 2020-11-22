@@ -59,6 +59,7 @@ class Controller {
     create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(req.body);
                 // validation would be handled in the User model
                 const doc = yield conversations_service_1.default.create(req.body);
                 return res

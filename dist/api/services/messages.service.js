@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessagesService = void 0;
 const logger_1 = __importDefault(require("../../common/logger"));
+const conversation_1 = require("../models/conversation");
 const message_1 = require("../models/message");
 class MessagesService {
     getAll() {
@@ -45,6 +46,14 @@ class MessagesService {
             // l.info(`create message with data ${JSON.stringify(data)}`);
             const message = new message_1.Message(data);
             const doc = (yield message.save());
+            const convo = (yield conversation_1.Conversation.findOne({
+                conversation_id: message.conversation_id,
+            }));
+            convo.latestMessage = {
+                text: message.text,
+                user: message.user,
+            };
+            yield convo.save();
             const messages = yield this.getAllByConversationId(doc.conversation_id);
             return messages;
         });

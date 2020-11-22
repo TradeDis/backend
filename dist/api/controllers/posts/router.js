@@ -9,5 +9,6 @@ exports.default = express_1.default
     .Router()
     .post("/", controller_1.default.create)
     .get("/", controller_1.default.getAll)
-    .get("/:post_id", controller_1.default.getById);
+    .get("/:post_id", controller_1.default.getById)
+    .put("/:post_id", controller_1.default.updatePostById);
 //# sourceMappingURL=router.js.map

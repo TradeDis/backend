@@ -39,7 +39,9 @@ class ConversationsService {
                         user_id,
                     },
                 },
-            }, "-_id -__v").lean());
+            }, "-_id -__v")
+                .lean()
+                .sort({ updated_at: "desc" }));
             return conversation;
         });
     }

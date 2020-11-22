@@ -52,6 +52,17 @@ class Controller {
             }
         });
     }
+    updatePostById(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const doc = yield posts_service_1.default.updatePostById(req.body, parseInt(req.params.post_id));
+                return res.status(201).json(doc);
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
 }
 exports.Controller = Controller;
 exports.default = new Controller();
