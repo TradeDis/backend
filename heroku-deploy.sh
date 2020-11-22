@@ -16,7 +16,7 @@ echo "Pushing.."
 git add .
 git commit -m "chore: build"
 git push
-git push heroku feat/inbox:master
+git push heroku main:master
 
 
 
