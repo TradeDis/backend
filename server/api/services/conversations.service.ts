@@ -32,7 +32,9 @@ export class ConversationsService {
         },
       },
       "-_id -__v"
-    ).lean()) as IConversationModel[];
+    )
+      .lean()
+      .sort({ updated_at: "desc" })) as IConversationModel[];
     return conversation;
   }
 

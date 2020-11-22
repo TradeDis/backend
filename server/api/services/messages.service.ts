@@ -1,4 +1,5 @@
 import l from "../../common/logger";
+import { Conversation, IConversationModel } from "../models/conversation";
 
 import { Message, IMessageModel } from "../models/message";
 
@@ -34,6 +35,14 @@ export class MessagesService {
     // l.info(`create message with data ${JSON.stringify(data)}`);
     const message = new Message(data);
     const doc = (await message.save()) as IMessageModel;
+    const convo = (await Conversation.findOne({
+      conversation_id: message.conversation_id,
+    })) as IConversationModel;
+    convo.latestMessage = {
+      text: message.text,
+      user: message.user,
+    };
+    await convo.save();
     const messages = await this.getAllByConversationId(doc.conversation_id);
     return messages;
   }

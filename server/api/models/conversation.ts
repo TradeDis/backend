@@ -17,6 +17,7 @@ export interface IConversationModel extends mongoose.Document {
     text: string;
     user: User;
   };
+  updated_at: Date;
 }
 
 const user = new mongoose.Schema({
@@ -32,6 +33,10 @@ const conversations = new mongoose.Schema(
     members: [user],
     // reference to the post
     post_id: Number,
+    latestMessage: {
+      text: String,
+      user: user,
+    },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

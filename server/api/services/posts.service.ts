@@ -5,7 +5,9 @@ import { Post, IPostModel } from "../models/post";
 export class PostsService {
   async getAll(): Promise<IPostModel[]> {
     l.info("fetch all posts");
-    const posts = (await Post.find(null, "-_id -__v").lean()) as IPostModel[];
+    const posts = (await Post.find(null, "-_id -__v")
+      .lean()
+      .sort({ updated_at: "desc" })) as IPostModel[];
     return posts;
   }
 

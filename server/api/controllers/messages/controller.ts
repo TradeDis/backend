@@ -90,24 +90,29 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log(req.body);
+
       console.log(req.query.socket_id);
       req.body.conversation_id = parseInt(req.params.conversation_id);
       // validation would be handled in the Message model
       const doc = await MessagesService.create(req.body);
       console.log("Pushing updating signal....");
-      Object.values(rooms_sockets[req.params.conversation_id]).forEach(
-        (socket: any) => {
-          if (socket.id != req.query.socket_id) {
-            console.log(
-              "updating ",
-              socket.id,
-              " to ",
-              req.body.conversation_id
-            );
-            socket.emit("update", "hi");
+      if (req.query.socket_id) {
+        console.log(rooms_sockets);
+        Object.values(rooms_sockets[req.params.conversation_id]).forEach(
+          (socket: any) => {
+            if (socket.id != req.query.socket_id) {
+              console.log(
+                "updating ",
+                socket.id,
+                " to ",
+                req.body.conversation_id
+              );
+              socket.emit("update", "hi");
+            }
           }
-        }
-      );
+        );
+      }
       return res.status(201).json(doc);
     } catch (err) {
       console.log(err);

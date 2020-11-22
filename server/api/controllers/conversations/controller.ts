@@ -43,6 +43,7 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log(req.body);
       // validation would be handled in the User model
       const doc = await ConversationsService.create(req.body);
       return res
