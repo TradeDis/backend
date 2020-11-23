@@ -66,6 +66,7 @@ const posts = new mongoose.Schema(
     comments: [comment],
   },
   {
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
     collection: "posts",
   }
 );

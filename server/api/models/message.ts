@@ -45,7 +45,7 @@ const messages = new mongoose.Schema(
     pending: Boolean,
   },
   {
-    timestamps: { createdAt: "createdAt", updatedAt: "createdAt" },
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
     collection: "messages",
   }
 );

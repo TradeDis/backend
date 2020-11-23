@@ -5,9 +5,9 @@ import { Post, IPostModel } from "../models/post";
 export class PostsService {
   async getAll(): Promise<IPostModel[]> {
     l.info("fetch all posts");
-    const posts = (await Post.find(null, "-_id -__v")
-      .lean()
-      .sort({ updated_at: "desc" })) as IPostModel[];
+    const posts = (await Post.find(null).sort({
+      updatedAt: "desc",
+    })) as IPostModel[];
     return posts;
   }
 
@@ -18,6 +18,15 @@ export class PostsService {
       "-_id -__v"
     ).lean()) as IPostModel;
     return post;
+  }
+
+  async getByUserId(user_id: number): Promise<IPostModel[]> {
+    l.info(`fetch post with user_id ${user_id}`);
+    const posts = (await Post.find(
+      { "created_by.user_id": user_id },
+      "-_id -__v"
+    ).lean()) as IPostModel[];
+    return posts;
   }
 
   async create(data: IPostModel): Promise<IPostModel> {
