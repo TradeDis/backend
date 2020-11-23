@@ -95,7 +95,7 @@ export class Controller {
       console.log(req.query.socket_id);
       req.body.conversation_id = parseInt(req.params.conversation_id);
       // validation would be handled in the Message model
-      const doc = await MessagesService.create(req.body);
+      const doc = await MessagesService.create(req.body, true);
       console.log("Pushing updating signal....");
       if (req.query.socket_id) {
         console.log(rooms_sockets);

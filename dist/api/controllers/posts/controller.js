@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
 const posts_service_1 = __importDefault(require("../../services/posts.service"));
+const conversations_service_1 = __importDefault(require("../../services/conversations.service"));
+const messages_service_1 = __importDefault(require("../../services/messages.service"));
 class Controller {
     getAll(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,6 +43,36 @@ class Controller {
             }
         });
     }
+    getByUserId(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const doc = yield posts_service_1.default.getByUserId(parseInt(req.params.user_id)); //query param is a string, must convert to number with parseInt
+                if (doc) {
+                    return res.status(200).json(doc);
+                }
+                const errors = [{ message: "Post not found" }];
+                return res.status(404).json({ errors });
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
+    getByProposerId(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const doc = yield posts_service_1.default.getByProposerId(parseInt(req.params.user_id)); //query param is a string, must convert to number with parseInt
+                if (doc) {
+                    return res.status(200).json(doc);
+                }
+                const errors = [{ message: "Post not found" }];
+                return res.status(404).json({ errors });
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
     create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -57,6 +89,27 @@ class Controller {
             try {
                 const doc = yield posts_service_1.default.updatePostById(req.body, parseInt(req.params.post_id));
                 return res.status(201).json(doc);
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
+    propose(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("Propose");
+            const { post_id } = req.params;
+            let { conversation, systemMessage, firstMessage, proposer } = req.body;
+            try {
+                const new_conversation = yield conversations_service_1.default.create(conversation);
+                systemMessage.conversation_id = new_conversation.conversation_id;
+                yield messages_service_1.default.create(systemMessage);
+                firstMessage.conversation_id = new_conversation.conversation_id;
+                yield messages_service_1.default.create(firstMessage);
+                const post = yield posts_service_1.default.getById(parseInt(post_id));
+                post.proposers.push(proposer);
+                yield post.save();
+                return res.status(201).json(post);
             }
             catch (err) {
                 return next(err);

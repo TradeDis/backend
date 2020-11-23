@@ -105,7 +105,7 @@ class Controller {
                 console.log(req.query.socket_id);
                 req.body.conversation_id = parseInt(req.params.conversation_id);
                 // validation would be handled in the Message model
-                const doc = yield messages_service_1.default.create(req.body);
+                const doc = yield messages_service_1.default.create(req.body, true);
                 console.log("Pushing updating signal....");
                 if (req.query.socket_id) {
                     console.log(rooms_sockets);

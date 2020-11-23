@@ -3,16 +3,13 @@ import { expect } from "chai";
 import request from "supertest";
 import Server from "../server";
 
-describe("User", () => {
-  it("should add a new user", () =>
-    request(Server)
-      .post("/api/v1/users")
-      .send({ name: "test" })
-      .expect(201));
+describe("post", () => {
+  it("should add a new post", () =>
+    request(Server).post("/api/v1/posts").send({ name: "test" }).expect(201));
 
-  it("should get an user by id", () =>
+  it("should get an post by id", () =>
     request(Server)
-      .get("/api/v1/users/1")
+      .get("/api/v1/posts/1")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.body)
@@ -21,9 +18,20 @@ describe("User", () => {
           .equal("test");
       }));
 
-  it("should get all users", () =>
+  it("should get an post by user id", () =>
     request(Server)
-      .get("/api/v1/users")
+      .get("/api/v1/posts/user/1")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("name")
+          .equal("test");
+      }));
+
+  it("should get all posts", () =>
+    request(Server)
+      .get("/api/v1/posts")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.body).to.be.an("array").of.length(1);

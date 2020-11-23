@@ -25,7 +25,7 @@ const messages = new mongoose_1.default.Schema({
     received: Boolean,
     pending: Boolean,
 }, {
-    timestamps: { createdAt: "createdAt", updatedAt: "createdAt" },
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
     collection: "messages",
 });
 messages.plugin(AutoIncrement, { inc_field: "message_id" });

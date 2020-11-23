@@ -41,7 +41,7 @@ class MessagesService {
             return message;
         });
     }
-    create(data) {
+    create(data, fetchAll = false) {
         return __awaiter(this, void 0, void 0, function* () {
             // l.info(`create message with data ${JSON.stringify(data)}`);
             const message = new message_1.Message(data);
@@ -54,7 +54,10 @@ class MessagesService {
                 user: message.user,
             };
             yield convo.save();
-            const messages = yield this.getAllByConversationId(doc.conversation_id);
+            let messages = [];
+            if (fetchAll) {
+                messages = yield this.getAllByConversationId(doc.conversation_id);
+            }
             return messages;
         });
     }

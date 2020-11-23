@@ -13,11 +13,23 @@ export class PostsService {
 
   async getById(id: number): Promise<IPostModel> {
     l.info(`fetch post with post_id ${id}`);
-    const post = (await Post.findOne(
-      { post_id: id },
-      "-_id -__v"
-    ).lean()) as IPostModel;
+    const post = (await Post.findOne({ post_id: id })) as IPostModel;
     return post;
+  }
+
+  async getByProposerId(user_id: number): Promise<IPostModel[]> {
+    l.info(`fetch post with user_id ${user_id}`);
+    const posts = (await Post.find(
+      {
+        proposers: {
+          $elemMatch: {
+            user_id,
+          },
+        },
+      },
+      "-_id -__v"
+    ).lean()) as IPostModel[];
+    return posts;
   }
 
   async getByUserId(user_id: number): Promise<IPostModel[]> {

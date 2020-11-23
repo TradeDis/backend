@@ -6,4 +6,6 @@ export default express
   .get("/", controller.getAll)
   .get("/:post_id", controller.getById)
   .get("/user/:user_id", controller.getByUserId)
-  .put("/:post_id", controller.updatePostById);
+  .get("/proposer/:user_id", controller.getByProposerId)
+  .put("/:post_id", controller.updatePostById)
+  .post("/:post_id/propose", controller.propose);
