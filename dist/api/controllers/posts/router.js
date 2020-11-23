@@ -10,5 +10,8 @@ exports.default = express_1.default
     .post("/", controller_1.default.create)
     .get("/", controller_1.default.getAll)
     .get("/:post_id", controller_1.default.getById)
-    .put("/:post_id", controller_1.default.updatePostById);
+    .get("/user/:user_id", controller_1.default.getByUserId)
+    .get("/proposer/:user_id", controller_1.default.getByProposerId)
+    .put("/:post_id", controller_1.default.updatePostById)
+    .post("/:post_id/propose", controller_1.default.propose);
 //# sourceMappingURL=router.js.map

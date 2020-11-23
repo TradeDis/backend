@@ -7,16 +7,25 @@ exports.Post = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongoose_sequence_1 = __importDefault(require("mongoose-sequence"));
 const AutoIncrement = mongoose_sequence_1.default(mongoose_1.default);
+const proposer = new mongoose_1.default.Schema({
+    user_id: Number,
+    username: String,
+    first_name: String,
+    last_name: String,
+    avatar: String,
+});
 const poster = new mongoose_1.default.Schema({
     user_id: Number,
     username: String,
-    full_name: String,
+    first_name: String,
+    last_name: String,
     avatar: String,
 });
 const commenter = new mongoose_1.default.Schema({
     user_id: Number,
     username: String,
-    full_name: String,
+    first_name: String,
+    last_name: String,
     avatar: String,
 });
 const comment = new mongoose_1.default.Schema({
@@ -35,7 +44,9 @@ const posts = new mongoose_1.default.Schema({
     status: String,
     tags: [String],
     comments: [comment],
+    proposers: [proposer],
 }, {
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
     collection: "posts",
 });
 posts.plugin(AutoIncrement, { inc_field: "post_id" });

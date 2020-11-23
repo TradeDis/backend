@@ -19,17 +19,37 @@ class PostsService {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             logger_1.default.info("fetch all posts");
-            const posts = (yield post_1.Post.find(null, "-_id -__v")
-                .lean()
-                .sort({ updated_at: "desc" }));
+            const posts = (yield post_1.Post.find(null).sort({
+                updatedAt: "desc",
+            }));
             return posts;
         });
     }
     getById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             logger_1.default.info(`fetch post with post_id ${id}`);
-            const post = (yield post_1.Post.findOne({ post_id: id }, "-_id -__v").lean());
+            const post = (yield post_1.Post.findOne({ post_id: id }));
             return post;
+        });
+    }
+    getByProposerId(user_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            logger_1.default.info(`fetch post with user_id ${user_id}`);
+            const posts = (yield post_1.Post.find({
+                proposers: {
+                    $elemMatch: {
+                        user_id,
+                    },
+                },
+            }, "-_id -__v").lean());
+            return posts;
+        });
+    }
+    getByUserId(user_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            logger_1.default.info(`fetch post with user_id ${user_id}`);
+            const posts = (yield post_1.Post.find({ "created_by.user_id": user_id }, "-_id -__v").lean());
+            return posts;
         });
     }
     create(data) {
