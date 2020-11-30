@@ -18,6 +18,11 @@ export interface IPostModel extends mongoose.Document {
   date: Date;
   status: string;
   tags: string[];
+  reporters: [
+    {
+      user_id: number;
+    }
+  ];
   proposers: [
     {
       user_id: number;
@@ -46,7 +51,7 @@ const proposer = new mongoose.Schema({
   username: String,
   first_name: String,
   last_name: String,
-  avatar: String,
+  avatar: String
 });
 
 const poster = new mongoose.Schema({
@@ -54,7 +59,7 @@ const poster = new mongoose.Schema({
   username: String,
   first_name: String,
   last_name: String,
-  avatar: String,
+  avatar: String
 });
 
 const commenter = new mongoose.Schema({
@@ -62,13 +67,13 @@ const commenter = new mongoose.Schema({
   username: String,
   first_name: String,
   last_name: String,
-  avatar: String,
+  avatar: String
 });
 
 const comment = new mongoose.Schema({
   comment_id: String,
   created_by: commenter,
-  comment: String,
+  comment: String
 });
 
 const posts = new mongoose.Schema(
@@ -84,10 +89,11 @@ const posts = new mongoose.Schema(
     tags: [String],
     comments: [comment],
     proposers: [proposer],
+    reporters: [Number]
   },
   {
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
-    collection: "posts",
+    collection: "posts"
   }
 );
 

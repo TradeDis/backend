@@ -1,5 +1,5 @@
 import MessagesService from "../../services/messages.service";
-import { Request, Response, NextFunction, Application } from "express";
+import { Request, Response, NextFunction } from "express";
 import l from "../../../common/logger";
 
 l.info("message controller");
@@ -7,13 +7,13 @@ l.info("message controller");
 let sockets_room = {};
 let rooms_sockets = {};
 export function socket_setup(io) {
-  io.on("connection", (socket) => {
+  io.on("connection", socket => {
     console.log("a user connected " + socket.id);
-    socket.join("room", function () {
+    socket.join("room", function() {
       console.log(socket.id + " now in rooms ", socket.rooms);
     });
 
-    socket.on("add_room", (conversation_id) => {
+    socket.on("add_room", conversation_id => {
       console.log("add_room", socket.id);
       if (rooms_sockets[conversation_id]) {
         rooms_sockets[conversation_id][socket.id] = socket;
@@ -25,7 +25,7 @@ export function socket_setup(io) {
       console.log(sockets_room);
     });
     // console.log(Object.keys(sockets));
-    socket.on("disconnect", (reason) => {
+    socket.on("disconnect", reason => {
       console.log("disconnected ", socket.id);
       if (rooms_sockets[sockets_room[socket.id]])
         delete rooms_sockets[sockets_room[socket.id]][socket.id];
