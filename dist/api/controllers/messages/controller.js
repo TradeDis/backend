@@ -140,8 +140,8 @@ class Controller {
                 }
                 let recipients = conversation.members.filter((member) => {
                     return (
-                        // skip sending notification to the sender and users who are in the chat
-                        member.user_id != newMessage.user.user_id &&
+                    // skip sending notification to the sender and users who are in the chat
+                    member.user_id != newMessage.user.user_id &&
                         !Object.values(rooms_sockets[conversation_id]).some((socket_member) => member.user_id == socket_member.user_id));
                 });
                 console.log(recipients);
