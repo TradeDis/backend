@@ -12,6 +12,7 @@ exports.default = express_1.default
     .post("/login", controller_1.default.login)
     .get("/", controller_1.default.getAll)
     .get("/:user_id", controller_1.default.getById)
+    .post("/:user_id/token", controller_1.default.update_push_token)
     .put("/:user_id", controller_1.default.updateById)
     .get("/:member_id/conversations", controller_2.default.getByMemberId);
 //# sourceMappingURL=router.js.map

@@ -1,7 +1,6 @@
 import express from "express";
 import { Application } from "express";
 import path from "path";
-import http from "http";
 import os from "os";
 import cookieParser from "cookie-parser";
 import installValidator from "./openapi";

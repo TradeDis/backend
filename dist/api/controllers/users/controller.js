@@ -66,6 +66,18 @@ class Controller {
             }
         });
     }
+    update_push_token(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { push_token } = req.body;
+                const user = yield users_service_1.default.update_push_token(parseInt(req.params.user_id), push_token);
+                return res.status(200).json(user);
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
     login(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

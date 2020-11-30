@@ -41,6 +41,21 @@ export class UsersService {
     ).lean()) as IUserModel;
     return user;
   }
+
+  async update_push_token(
+    user_id: number,
+    push_token: string
+  ): Promise<IUserModel> {
+    l.info(`updating user ${user_id} token: ${push_token}`);
+    const doc = await User.findOneAndUpdate(
+      { user_id: user_id },
+      { push_token: push_token },
+      // If `new` isn't true, `findOneAndUpdate()` will return the
+      // document as it was _before_ it was updated.
+      { new: true }
+    );
+    return doc;
+  }
 }
 
 export default new UsersService();

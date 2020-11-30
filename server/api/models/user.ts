@@ -1,4 +1,4 @@
-import mongoose, { Model } from "mongoose";
+import mongoose from "mongoose";
 import sequence from "mongoose-sequence";
 const uniqueValidator = require("mongoose-unique-validator");
 import { isEmail } from "validator";
@@ -6,6 +6,7 @@ import { isEmail } from "validator";
 const AutoIncrement = sequence(mongoose);
 
 export interface IUserModel extends mongoose.Document {
+  push_token: string;
   user_id: number;
   username: string;
   name: string;
@@ -63,6 +64,7 @@ var validateEmail = function (email) {
 };
 const users = new mongoose.Schema(
   {
+    push_token: String,
     user_id: { type: Number, unique: true },
     username: {
       type: String,

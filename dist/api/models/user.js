@@ -33,6 +33,7 @@ var validateEmail = function (email) {
     }
 };
 const users = new mongoose_1.default.Schema({
+    push_token: String,
     user_id: { type: Number, unique: true },
     username: {
         type: String,

@@ -48,6 +48,21 @@ export class Controller {
     }
   }
 
+  async update_push_token(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { push_token } = req.body;
+
+      const user = await UsersService.update_push_token(
+        parseInt(req.params.user_id),
+        push_token
+      );
+
+      return res.status(200).json(user);
+    } catch (err) {
+      return next(err);
+    }
+  }
+
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;

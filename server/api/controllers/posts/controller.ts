@@ -2,7 +2,6 @@ import PostsService from "../../services/posts.service";
 import { Request, Response, NextFunction } from "express";
 import ConversationsService from "../../services/conversations.service";
 import MessagesService from "../../services/messages.service";
-
 export class Controller {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
@@ -57,6 +56,11 @@ export class Controller {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const doc = await PostsService.create(req.body);
+      // send({
+      //   sound: "default",
+      //   body: "A post is created",
+      //   data: { withSome: "data" },
+      // });
       return res.status(201).location(`/api/v1/examples/${doc.id}`).end();
     } catch (err) {
       return next(err);
@@ -69,6 +73,7 @@ export class Controller {
         req.body,
         parseInt(req.params.post_id)
       );
+      console.log(doc);
       return res.status(201).json(doc);
     } catch (err) {
       return next(err);

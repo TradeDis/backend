@@ -65,7 +65,9 @@ class PostsService {
         return __awaiter(this, void 0, void 0, function* () {
             logger_1.default.info(`update the post data ${data}`);
             const filter = { post_id: post_id };
-            return (yield post_1.Post.findOneAndUpdate(filter, data).exec());
+            const post = yield post_1.Post.findOneAndUpdate(filter, data).exec();
+            console.log(post);
+            return post;
         });
     }
 }

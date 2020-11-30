@@ -52,7 +52,10 @@ export class PostsService {
   async updatePostById(data: IPostModel, post_id: number): Promise<IPostModel> {
     l.info(`update the post data ${data}`);
     const filter = { post_id: post_id };
-    return (await Post.findOneAndUpdate(filter, data).exec()) as IPostModel;
+    const post = await Post.findOneAndUpdate(filter, data).exec();
+    console.log(post);
+
+    return post as IPostModel;
   }
 }
 
