@@ -7,5 +7,6 @@ export default express
   .post("/login", controller.login)
   .get("/", controller.getAll)
   .get("/:user_id", controller.getById)
+  .post("/:user_id/token", controller.update_push_token)
   .put("/:user_id", controller.updateById)
   .get("/:member_id/conversations", conversation.getByMemberId);

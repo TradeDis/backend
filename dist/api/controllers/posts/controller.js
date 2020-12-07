@@ -77,6 +77,11 @@ class Controller {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const doc = yield posts_service_1.default.create(req.body);
+                // send({
+                //   sound: "default",
+                //   body: "A post is created",
+                //   data: { withSome: "data" },
+                // });
                 return res.status(201).location(`/api/v1/examples/${doc.id}`).end();
             }
             catch (err) {
@@ -88,6 +93,7 @@ class Controller {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const doc = yield posts_service_1.default.updatePostById(req.body, parseInt(req.params.post_id));
+                console.log(doc);
                 return res.status(201).json(doc);
             }
             catch (err) {

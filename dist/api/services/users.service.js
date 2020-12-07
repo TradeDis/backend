@@ -53,6 +53,16 @@ class UsersService {
             return user;
         });
     }
+    update_push_token(user_id, push_token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            logger_1.default.info(`updating user ${user_id} token: ${push_token}`);
+            const doc = yield user_1.User.findOneAndUpdate({ user_id: user_id }, { push_token: push_token }, 
+            // If `new` isn't true, `findOneAndUpdate()` will return the
+            // document as it was _before_ it was updated.
+            { new: true });
+            return doc;
+        });
+    }
 }
 exports.UsersService = UsersService;
 exports.default = new UsersService();

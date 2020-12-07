@@ -1,6 +1,8 @@
 import MessagesService from "../../services/messages.service";
 import { Request, Response, NextFunction } from "express";
 import l from "../../../common/logger";
+import { send } from "../../../common/push_notification";
+import UsersService from "../../services/users.service";
 
 l.info("message controller");
 
@@ -12,17 +14,50 @@ export function socket_setup(io) {
     socket.join("room", function() {
       console.log(socket.id + " now in rooms ", socket.rooms);
     });
+    socket.on("start_typing", ({ socket_id, conversation_id }) => {
+      console.log("start_typing");
+      Object.values(rooms_sockets[conversation_id]).forEach(
+        ({ socket }: any) => {
+          if (socket.id != socket_id) {
+            console.log(
+              "broadcast ",
+              socket_id,
+              " typing to room",
+              conversation_id
+            );
+            socket.emit("start_typing", "start");
+          }
+        }
+      );
+    });
 
-    socket.on("add_room", conversation_id => {
+    socket.on("end_typing", ({ socket_id, conversation_id }) => {
+      console.log("end typing");
+      Object.values(rooms_sockets[conversation_id]).forEach(
+        ({ socket }: any) => {
+          if (socket.id != socket_id) {
+            console.log(
+              "broadcast ",
+              socket_id,
+              "stop typing to room",
+              conversation_id
+            );
+            socket.emit("end_typing", "end");
+          }
+        }
+      );
+    });
+
+    socket.on("add_room", ({ conversation_id, user_id }) => {
       console.log("add_room", socket.id);
       if (rooms_sockets[conversation_id]) {
-        rooms_sockets[conversation_id][socket.id] = socket;
+        rooms_sockets[conversation_id][socket.id] = { socket, user_id };
       } else {
-        rooms_sockets[conversation_id] = { [socket.id]: socket };
+        rooms_sockets[conversation_id] = { [socket.id]: { socket, user_id } };
       }
       sockets_room[socket.id] = conversation_id;
-      console.log(Object.keys(sockets_room));
-      console.log(sockets_room);
+      // console.log(Object.keys(sockets_room));
+      // console.log(sockets_room);
     });
     // console.log(Object.keys(sockets));
     socket.on("disconnect", reason => {
@@ -30,8 +65,7 @@ export function socket_setup(io) {
       if (rooms_sockets[sockets_room[socket.id]])
         delete rooms_sockets[sockets_room[socket.id]][socket.id];
       if (sockets_room[socket.id]) delete sockets_room[socket.id];
-      console.log(Object.keys(rooms_sockets));
-      console.log(sockets_room);
+      // console.log(Object.keys(ro
       // else the socket will automatically try to reconnect
     });
   });
@@ -90,18 +124,21 @@ export class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      let { conversation, newMessage } = req.body;
+      const { conversation_id } = req.params;
+      const { socket_id } = req.query;
       console.log(req.body);
 
-      console.log(req.query.socket_id);
-      req.body.conversation_id = parseInt(req.params.conversation_id);
+      console.log(socket_id);
+      newMessage.conversation_id = parseInt(conversation_id);
       // validation would be handled in the Message model
-      const doc = await MessagesService.create(req.body, true);
+      const doc = await MessagesService.create(newMessage, true);
       console.log("Pushing updating signal....");
-      if (req.query.socket_id) {
+      if (socket_id) {
         console.log(rooms_sockets);
-        Object.values(rooms_sockets[req.params.conversation_id]).forEach(
-          (socket: any) => {
-            if (socket.id != req.query.socket_id) {
+        Object.values(rooms_sockets[conversation_id]).forEach(
+          ({ socket }: any) => {
+            if (socket.id != socket_id) {
               console.log(
                 "updating ",
                 socket.id,
@@ -113,6 +150,35 @@ export class Controller {
           }
         );
       }
+
+      let recipients = conversation.members.filter((member) => {
+        return (
+          // skip sending notification to the sender and users who are in the chat
+          member.user_id != newMessage.user.user_id &&
+          !Object.values(rooms_sockets[conversation_id]).some(
+            (socket_member: any) => member.user_id == socket_member.user_id
+          )
+        );
+      });
+
+      console.log(recipients);
+
+      recipients = await Promise.all(
+        recipients.map(async (member) => {
+          const user = await UsersService.getById(member.user_id);
+          return user.push_token;
+        })
+      );
+
+      console.log(recipients);
+
+      send(recipients, {
+        sound: "default",
+        title: `📣 New message for ${conversation.name}`,
+        body: `${newMessage.user.name}: ${newMessage.text}`,
+        data: { conversation },
+      });
+
       return res.status(201).json(doc);
     } catch (err) {
       console.log(err);
