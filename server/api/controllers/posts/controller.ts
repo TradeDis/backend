@@ -93,7 +93,7 @@ export class Controller {
       const post = await PostsService.getById(parseInt(post_id));
       post.proposers.push(proposer);
       await post.save();
-      return res.status(201).json(post);
+      return res.status(201).json(new_conversation);
     } catch (err) {
       return next(err);
     }
