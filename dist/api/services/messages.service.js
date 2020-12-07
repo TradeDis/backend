@@ -76,7 +76,7 @@ class MessagesService {
                 sound: "default",
                 title: `🎉 New Proposal for ${convo.name}`,
                 body: `${newMessage.user.name}: ${newMessage.text}`,
-                data: { convo },
+                data: { conversation: convo },
             });
             return messages;
         });
