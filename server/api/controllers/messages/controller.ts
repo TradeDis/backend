@@ -176,7 +176,7 @@ export class Controller {
         sound: "default",
         title: `📣 New message for ${conversation.name}`,
         body: `${newMessage.user.name}: ${newMessage.text}`,
-        data: { withSome: "data" },
+        data: { conversation },
       });
 
       return res.status(201).json(doc);
