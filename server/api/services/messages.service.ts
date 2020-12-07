@@ -1,7 +1,8 @@
 import l from "../../common/logger";
 import { Conversation, IConversationModel } from "../models/conversation";
-
 import { Message, IMessageModel } from "../models/message";
+import { send } from "../../common/push_notification";
+import UsersService from "../services/users.service";
 
 export class MessagesService {
   async getAll(): Promise<IMessageModel[]> {
@@ -32,11 +33,11 @@ export class MessagesService {
   }
 
   async create(
-    data: IMessageModel,
+    newMessage: IMessageModel,
     fetchAll = false
   ): Promise<IMessageModel[]> {
     // l.info(`create message with data ${JSON.stringify(data)}`);
-    const message = new Message(data);
+    const message = new Message(newMessage);
     const doc = (await message.save()) as IMessageModel;
     const convo = (await Conversation.findOne({
       conversation_id: message.conversation_id,
@@ -49,7 +50,34 @@ export class MessagesService {
     let messages = [];
     if (fetchAll) {
       messages = await this.getAllByConversationId(doc.conversation_id);
+      return messages;
     }
+
+    let recipients: any = convo.members.filter((member) => {
+      return (
+        // skip sending notification to the sender and users who are in the chat
+        member.user_id != newMessage.user.user_id
+      );
+    });
+
+    console.log(recipients);
+
+    recipients = await Promise.all(
+      recipients.map(async (member) => {
+        const user = await UsersService.getById(member.user_id);
+        return user.push_token;
+      })
+    );
+
+    console.log(recipients);
+
+    send(recipients, {
+      sound: "default",
+      title: `🎉 New Proposal for ${convo.name}`,
+      body: `${newMessage.user.name}: ${newMessage.text}`,
+      data: { convo },
+    });
+
     return messages;
   }
 }

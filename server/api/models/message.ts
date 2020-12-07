@@ -5,6 +5,7 @@ const AutoIncrement = sequence(mongoose);
 
 export interface User extends mongoose.Document {
   _id: string | number;
+  user_id: number;
   name?: string;
   avatar?: string;
 }
