@@ -41,20 +41,20 @@ const reviewer = new mongoose.Schema({
   username: String,
   first_name: String,
   last_name: String,
-  avatar: String,
+  avatar: String
 });
 
 const review = new mongoose.Schema(
   {
     created_by: reviewer,
     review: String,
-    rating: Number,
+    rating: Number
   },
   {
-    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 );
-var validateEmail = function (email) {
+var validateEmail = function(email) {
   if (email.endsWith("@uwaterloo.ca")) {
     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return re.test(email);
@@ -71,7 +71,7 @@ const users = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
-      trim: true,
+      trim: true
     },
     email: {
       type: String,
@@ -83,20 +83,20 @@ const users = new mongoose.Schema(
         { validator: isEmail, message: "Oops..please enter valid email" },
         {
           validator: validateEmail,
-          message: "Oops..please enter a valid University of Waterloo email",
-        },
-      ],
+          message: "Oops..please enter a valid University of Waterloo email"
+        }
+      ]
     },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     password: { type: String, required: true },
     address: String,
     avatar: String,
-    reviews: { type: [review], required: false },
+    reviews: { type: [review], required: false }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
-    collection: "users",
+    collection: "users"
   }
 );
 
