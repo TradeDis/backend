@@ -115,7 +115,7 @@ class Controller {
                 const post = yield posts_service_1.default.getById(parseInt(post_id));
                 post.proposers.push(proposer);
                 yield post.save();
-                return res.status(201).json(post);
+                return res.status(201).json(new_conversation);
             }
             catch (err) {
                 return next(err);
