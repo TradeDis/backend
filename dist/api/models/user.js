@@ -14,14 +14,14 @@ const reviewer = new mongoose_1.default.Schema({
     username: String,
     first_name: String,
     last_name: String,
-    avatar: String
+    avatar: String,
 });
 const review = new mongoose_1.default.Schema({
     created_by: reviewer,
     review: String,
-    rating: Number
+    rating: Number,
 }, {
-    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
 });
 var validateEmail = function (email) {
     if (email.endsWith("@uwaterloo.ca")) {
@@ -40,7 +40,7 @@ const users = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         lowercase: true,
-        trim: true
+        trim: true,
     },
     email: {
         type: String,
@@ -52,19 +52,19 @@ const users = new mongoose_1.default.Schema({
             { validator: validator_1.isEmail, message: "Oops..please enter valid email" },
             {
                 validator: validateEmail,
-                message: "Oops..please enter a valid University of Waterloo email"
-            }
-        ]
+                message: "Oops..please enter a valid University of Waterloo email",
+            },
+        ],
     },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     password: { type: String, required: true },
     address: String,
     avatar: String,
-    reviews: { type: [review], required: false }
+    reviews: { type: [review], required: false },
 }, {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
-    collection: "users"
+    collection: "users",
 });
 class UserClass {
     // `fullName` becomes a virtual
