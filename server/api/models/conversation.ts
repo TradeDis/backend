@@ -4,6 +4,7 @@ import sequence from "mongoose-sequence";
 const AutoIncrement = sequence(mongoose);
 
 export interface User extends mongoose.Document {
+  user_id: number;
   _id: string | number;
   name?: string;
   avatar?: string;

@@ -53,7 +53,7 @@ export class MessagesService {
       return messages;
     }
 
-    let recipients: any = convo.members.filter((member) => {
+    let recipients: any = convo.members.filter((member: any) => {
       return (
         // skip sending notification to the sender and users who are in the chat
         member.user_id != newMessage.user.user_id

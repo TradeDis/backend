@@ -16,6 +16,8 @@ exports.MessagesService = void 0;
 const logger_1 = __importDefault(require("../../common/logger"));
 const conversation_1 = require("../models/conversation");
 const message_1 = require("../models/message");
+const push_notification_1 = require("../../common/push_notification");
+const users_service_1 = __importDefault(require("../services/users.service"));
 class MessagesService {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,10 +43,10 @@ class MessagesService {
             return message;
         });
     }
-    create(data, fetchAll = false) {
+    create(newMessage, fetchAll = false) {
         return __awaiter(this, void 0, void 0, function* () {
             // l.info(`create message with data ${JSON.stringify(data)}`);
-            const message = new message_1.Message(data);
+            const message = new message_1.Message(newMessage);
             const doc = (yield message.save());
             const convo = (yield conversation_1.Conversation.findOne({
                 conversation_id: message.conversation_id,
@@ -57,7 +59,25 @@ class MessagesService {
             let messages = [];
             if (fetchAll) {
                 messages = yield this.getAllByConversationId(doc.conversation_id);
+                return messages;
             }
+            let recipients = convo.members.filter((member) => {
+                return (
+                // skip sending notification to the sender and users who are in the chat
+                member.user_id != newMessage.user.user_id);
+            });
+            console.log(recipients);
+            recipients = yield Promise.all(recipients.map((member) => __awaiter(this, void 0, void 0, function* () {
+                const user = yield users_service_1.default.getById(member.user_id);
+                return user.push_token;
+            })));
+            console.log(recipients);
+            push_notification_1.send(recipients, {
+                sound: "default",
+                title: `🎉 New Proposal for ${convo.name}`,
+                body: `${newMessage.user.name}: ${newMessage.text}`,
+                data: { convo },
+            });
             return messages;
         });
     }
