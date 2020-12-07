@@ -20,7 +20,7 @@ class ExpressServer {
         app.use(express_1.default.json({ limit: process.env.REQUEST_LIMIT || "100kb" }));
         app.use(express_1.default.urlencoded({
             extended: true,
-            limit: process.env.REQUEST_LIMIT || "100kb",
+            limit: process.env.REQUEST_LIMIT || "100kb"
         }));
         app.use(cookie_parser_1.default(process.env.SESSION_SECRET));
         app.use(express_1.default.static(`${root}/public`));
@@ -40,7 +40,8 @@ class ExpressServer {
         return this;
     }
     listen(p = process.env.PORT) {
-        const welcome = (port) => () => logger_1.default.info(`up and running in ${process.env.NODE_ENV || "development"} @: ${os_1.default.hostname()} on port: ${port}`);
+        const welcome = port => () => logger_1.default.info(`up and running in ${process.env.NODE_ENV ||
+            "development"} @: ${os_1.default.hostname()} on port: ${port}`);
         controller_1.socket_setup(this.io);
         this.http.listen(p, welcome(p));
         return this.app;

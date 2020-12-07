@@ -21,7 +21,7 @@ logger_1.default.info("message controller");
 let sockets_room = {};
 let rooms_sockets = {};
 function socket_setup(io) {
-    io.on("connection", (socket) => {
+    io.on("connection", socket => {
         console.log("a user connected " + socket.id);
         socket.join("room", function () {
             console.log(socket.id + " now in rooms ", socket.rooms);
@@ -57,7 +57,7 @@ function socket_setup(io) {
             // console.log(sockets_room);
         });
         // console.log(Object.keys(sockets));
-        socket.on("disconnect", (reason) => {
+        socket.on("disconnect", reason => {
             console.log("disconnected ", socket.id);
             if (rooms_sockets[sockets_room[socket.id]])
                 delete rooms_sockets[sockets_room[socket.id]][socket.id];
